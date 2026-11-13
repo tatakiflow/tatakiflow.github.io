@@ -1,0 +1,56 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const formatDate = (date: Date) => date.toISOString().split('T')[0];
+---
+
+<Layout title={entry.data.title} description={entry.data.description}>
+  <div class="space-y-6">
+    <div class="flex items-center space-x-2 text-xs font-mono">
+      <a href="/blog" class="text-[#58a6ff] hover:underline">&larr; ~/blog</a>
+      <span class="text-[#8b949e]">/</span>
+      <span class="text-[#8b949e]">{entry.id}</span>
+    </div>
+
+    <header class="border-b border-[#30363d] pb-6 space-y-3 font-mono">
+      <h1 class="text-2xl sm:text-3xl font-bold text-[#f0f6fc]">{entry.data.title}</h1>
+
+      <div class="flex flex-wrap items-center justify-between text-xs text-[#8b949e] gap-2">
+        <time datetime={entry.data.publishDate.toISOString()}>Publicado: {formatDate(entry.data.publishDate)}</time>
+        {entry.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-1">
+            {entry.data.tags.map((tag) => (
+              <span class="text-[11px] px-1.5 py-0.5 rounded bg-[#161b22] text-[#8b949e] border border-[#30363d]">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+      <article class="lg:col-span-3 min-w-0">
+        <Content />
+      </article>
+
+      {headings.length > 0 && (
+        <aside class="hidden lg:block lg:col-span-1 sticky top-6">
+          <TableOfContents headings={headings} />
+        </aside>
+      )}
+    </div>
+  </div>
+</Layout>

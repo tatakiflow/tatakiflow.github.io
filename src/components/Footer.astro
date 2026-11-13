@@ -1,0 +1,26 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-16 pt-6 border-t border-[#30363d] text-xs text-[#8b949e]">
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center space-x-2">
+      <span class="inline-block w-2 h-2 rounded-full bg-[#3fb950]"></span>
+      <span>system online</span>
+      <span>::</span>
+      <a
+        href="https://github.com/tatakiflow"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hover:text-[#58a6ff] hover:underline"
+      >
+        github/tatakiflow
+      </a>
+    </div>
+
+    <div class="flex items-center space-x-4">
+      <span>{currentYear} &copy; tatakiflow</span>
+      <span>[built with astro]</span>
+    </div>
+  </div>
+</footer>

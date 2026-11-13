@@ -1,0 +1,63 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('notes')).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+
+const formatDate = (date: Date) => date.toISOString().split('T')[0];
+
+const notesByCategory = notes.reduce((acc, note) => {
+  const cat = note.data.category || 'General';
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(note);
+  return acc;
+}, {} as Record<string, typeof notes>);
+
+const categories = Object.keys(notesByCategory).sort();
+---
+
+<Layout title="Notes" description="Apuntes, cheatsheets y chuletas técnicas de ciberseguridad.">
+  <div class="space-y-8 font-mono">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#30363d] pb-4 gap-2">
+      <div>
+        <div class="text-xs text-[#8b949e] mb-1">tatakiflow@sec:~/notes$ tree -L 2</div>
+        <h1 class="text-xl font-bold text-[#f0f6fc]">Notes & Cheatsheets</h1>
+      </div>
+      <span class="text-xs text-[#8b949e]">
+        Total: <span class="text-[#3fb950] font-semibold">{notes.length}</span> apuntes en <span class="text-[#58a6ff] font-semibold">{categories.length}</span> categorias
+      </span>
+    </div>
+
+    <div class="space-y-6">
+      {categories.map((category) => (
+        <section class="border border-[#30363d] rounded-lg p-4 bg-[#161b22]/30 space-y-3">
+          <div class="flex items-center space-x-2 text-sm font-semibold text-[#58a6ff] border-b border-[#30363d]/60 pb-2">
+            <span>📁</span>
+            <span>~/notes/{category}</span>
+          </div>
+
+          <div class="space-y-2">
+            {notesByCategory[category].map((note) => (
+              <a
+                href={`/notes/${note.id}`}
+                class="group flex flex-col sm:flex-row sm:items-center justify-between p-2.5 rounded hover:bg-[#21262d] transition-colors gap-2"
+              >
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs text-[#3fb950]">├──</span>
+                  <span class="text-sm text-[#f0f6fc] group-hover:text-[#58a6ff] transition-colors">
+                    {note.data.title}
+                  </span>
+                </div>
+                <div class="flex items-center space-x-3 text-xs text-[#8b949e] pl-6 sm:pl-0">
+                  <time datetime={note.data.publishDate.toISOString()}>{formatDate(note.data.publishDate)}</time>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</Layout>

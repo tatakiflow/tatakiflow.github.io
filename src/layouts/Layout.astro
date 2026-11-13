@@ -1,0 +1,121 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Write-ups de Hack The Box y cuaderno de notas de ciberseguridad.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title} | tatakiflow</title>
+  </head>
+  <body class="min-h-screen bg-[#0d1117] text-[#c9d1d9] antialiased selection:bg-[#238636] selection:text-white">
+    <div class="max-w-4xl mx-auto px-4 py-8 sm:py-12 flex flex-col min-h-screen">
+      <Header />
+      <main class="flex-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  article pre {
+    background-color: #161b22 !important;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  article code:not(pre code) {
+    background-color: #21262d;
+    color: #58a6ff;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+    border: 1px solid #30363d;
+  }
+
+  article h1,
+  article h2,
+  article h3,
+  article h4 {
+    color: #f0f6fc;
+    font-weight: 600;
+    scroll-margin-top: 2rem;
+  }
+
+  article h1 {
+    font-size: 1.75rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #21262d;
+    padding-bottom: 0.5rem;
+  }
+
+  article h2 {
+    font-size: 1.35rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: #3fb950;
+  }
+
+  article h3 {
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #58a6ff;
+  }
+
+  article p {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.7;
+    color: #c9d1d9;
+  }
+
+  article ul {
+    list-style-type: disc;
+    list-style-position: inside;
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+  }
+
+  article li {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    color: #c9d1d9;
+  }
+
+  article a {
+    color: #58a6ff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  article blockquote {
+    border-left: 3px solid #30363d;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    color: #8b949e;
+  }
+</style>
