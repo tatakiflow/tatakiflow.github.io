@@ -1,14 +1,14 @@
 # tatakiflow.github.io
 
-Blog y portfolio personal enfocado en ciberseguridad ofensiva, resolución de máquinas de Hack The Box (HTB), desarrollo de software e inteligencia artificial.
+Personal website and notebook focusing on offensive cybersecurity, Hack The Box writeups, software development, and artificial intelligence.
 
-## Estructura del proyecto
+## Structure
 
-- `src/content/writeups/`: Documentación y write-ups de máquinas HTB.
-- `src/content/blog/`: Artículos técnicos sobre IA, pentesting y desarrollo.
-- `src/content/notes/`: Apuntes técnicos, comandos y cheatsheets por categorías.
+- `src/content/writeups/`: Hack The Box walkthroughs and lab writeups.
+- `src/content/blog/`: Technical articles on AI, programming, and pentesting.
+- `src/content/notes/`: Technical reference notes and cheatsheets grouped by category.
 
-## Desarrollo local
+## Local Development
 
 ```bash
 npm install

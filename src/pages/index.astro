@@ -14,126 +14,71 @@ const notes = (await getCollection('notes')).sort(
   (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
 );
 
-const formatDate = (date: Date) => {
-  return date.toISOString().split('T')[0];
-};
+const formatDate = (date: Date) => date.toISOString().split('T')[0];
 ---
 
-<Layout title="About Me">
-  <div class="space-y-10">
-    <section class="border border-[#30363d] rounded-lg p-5 bg-[#161b22]/50">
-      <div class="flex items-center space-x-2 text-xs text-[#8b949e] border-b border-[#30363d] pb-3 mb-4">
-        <span class="w-2.5 h-2.5 rounded-full bg-[#f85149]"></span>
-        <span class="w-2.5 h-2.5 rounded-full bg-[#f0883e]"></span>
-        <span class="w-2.5 h-2.5 rounded-full bg-[#3fb950]"></span>
-        <span class="ml-2 font-mono">session: tatakiflow@terminal</span>
-      </div>
+<Layout title="About">
+  <section>
+    <h1>About Me</h1>
+    <p>
+      I am a cybersecurity enthusiast focused on offensive security, penetration testing, and software development.
+      This site serves as an index for my Hack The Box writeups, technical notes, and research on AI and programming.
+    </p>
+  </section>
 
-      <div class="space-y-4 font-mono text-sm leading-relaxed">
-        <div>
-          <span class="text-[#3fb950] font-semibold">tatakiflow@sec:~$</span>
-          <span class="text-[#f0f6fc] ml-2">whoami</span>
-          <p class="text-[#c9d1d9] mt-1 pl-4 border-l border-[#30363d]">
-            Entusiasta de la ciberseguridad ofensiva, el pentesting y el desarrollo de software. Actualmente preparando certificaciones técnicas de seguridad mediante resolución de entornos prácticos en Hack The Box.
-          </p>
-        </div>
-
-        <div>
-          <span class="text-[#3fb950] font-semibold">tatakiflow@sec:~$</span>
-          <span class="text-[#f0f6fc] ml-2">cat interests.txt</span>
-          <div class="mt-1 pl-4 border-l border-[#30363d] flex flex-wrap gap-2 text-xs">
-            <span class="px-2 py-0.5 rounded bg-[#21262d] text-[#58a6ff] border border-[#30363d]">#Pentesting</span>
-            <span class="px-2 py-0.5 rounded bg-[#21262d] text-[#58a6ff] border border-[#30363d]">#HackTheBox</span>
-            <span class="px-2 py-0.5 rounded bg-[#21262d] text-[#58a6ff] border border-[#30363d]">#PrivEsc</span>
-            <span class="px-2 py-0.5 rounded bg-[#21262d] text-[#58a6ff] border border-[#30363d]">#IA</span>
-            <span class="px-2 py-0.5 rounded bg-[#21262d] text-[#58a6ff] border border-[#30363d]">#Python</span>
-            <span class="px-2 py-0.5 rounded bg-[#21262d] text-[#58a6ff] border border-[#30363d]">#Bash</span>
-          </div>
-        </div>
-
-        <div>
-          <span class="text-[#3fb950] font-semibold">tatakiflow@sec:~$</span>
-          <span class="text-[#f0f6fc] ml-2">cat sections.md</span>
-          <ul class="mt-1 pl-4 border-l border-[#30363d] space-y-1 text-xs">
-            <li><a href="/writeups" class="text-[#58a6ff] hover:underline font-semibold">~/writeups</a> - Documentación y explotación de máquinas HTB.</li>
-            <li><a href="/blog" class="text-[#58a6ff] hover:underline font-semibold">~/blog</a> - Artículos sobre IA, programación y análisis técnico.</li>
-            <li><a href="/notes" class="text-[#58a6ff] hover:underline font-semibold">~/notes</a> - Apuntes concisos, comandos clave y cheatsheets.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="space-y-4">
-      <div class="flex items-center justify-between border-b border-[#30363d] pb-2">
-        <h2 class="text-sm font-semibold text-[#3fb950] flex items-center space-x-2">
-          <span>&gt;</span>
-          <span>ULTIMOS WRITEUPS HTB</span>
-        </h2>
-        <a href="/writeups" class="text-xs text-[#8b949e] hover:text-[#58a6ff]">ver todos &rarr;</a>
-      </div>
-
-      <div class="space-y-2">
-        {writeups.slice(0, 3).map((item) => (
-          <a
-            href={`/writeups/${item.id}`}
-            class="group flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded border border-[#30363d] bg-[#161b22]/30 hover:bg-[#161b22] hover:border-[#58a6ff] transition-all gap-2"
-          >
-            <div class="flex items-center space-x-3">
-              <span class="text-xs px-1.5 py-0.5 rounded bg-[#21262d] text-[#3fb950] border border-[#30363d] font-mono">
-                {item.data.difficulty}
-              </span>
-              <span class="text-sm font-medium text-[#f0f6fc] group-hover:text-[#58a6ff] transition-colors">
-                {item.data.title}
-              </span>
-            </div>
-            <div class="flex items-center space-x-3 text-xs text-[#8b949e]">
-              <span>{item.data.os}</span>
-              <span>::</span>
-              <time datetime={item.data.publishDate.toISOString()}>{formatDate(item.data.publishDate)}</time>
-            </div>
-          </a>
+  <section>
+    <h2>Latest HTB Writeups</h2>
+    {writeups.length === 0 ? (
+      <p>No writeups published yet.</p>
+    ) : (
+      <ul>
+        {writeups.slice(0, 5).map((entry) => (
+          <li>
+            <time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time>
+            {' - '}
+            <a href={`/writeups/${entry.id}`}>{entry.data.title}</a>
+            {' '}[{entry.data.os}, {entry.data.difficulty}]
+          </li>
         ))}
-      </div>
-    </section>
+      </ul>
+    )}
+    <p><a href="/writeups">All writeups &rarr;</a></p>
+  </section>
 
-    <section class="space-y-4">
-      <div class="flex items-center justify-between border-b border-[#30363d] pb-2">
-        <h2 class="text-sm font-semibold text-[#58a6ff] flex items-center space-x-2">
-          <span>&gt;</span>
-          <span>ULTIMOS ARTICULOS Y APUNTES</span>
-        </h2>
-      </div>
+  <section>
+    <h2>Latest Articles</h2>
+    {blogPosts.length === 0 ? (
+      <p>No articles published yet.</p>
+    ) : (
+      <ul>
+        {blogPosts.slice(0, 5).map((entry) => (
+          <li>
+            <time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time>
+            {' - '}
+            <a href={`/blog/${entry.id}`}>{entry.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    )}
+    <p><a href="/blog">All articles &rarr;</a></p>
+  </section>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="space-y-2">
-          <span class="text-xs text-[#8b949e] block font-semibold">~/blog</span>
-          {blogPosts.slice(0, 2).map((post) => (
-            <a
-              href={`/blog/${post.id}`}
-              class="block p-3 rounded border border-[#30363d] bg-[#161b22]/30 hover:bg-[#161b22] transition-colors"
-            >
-              <h3 class="text-sm font-medium text-[#f0f6fc] hover:text-[#58a6ff] line-clamp-1">{post.data.title}</h3>
-              <time class="text-xs text-[#8b949e] mt-1 block">{formatDate(post.data.publishDate)}</time>
-            </a>
-          ))}
-        </div>
-
-        <div class="space-y-2">
-          <span class="text-xs text-[#8b949e] block font-semibold">~/notes</span>
-          {notes.slice(0, 2).map((note) => (
-            <a
-              href={`/notes/${note.id}`}
-              class="block p-3 rounded border border-[#30363d] bg-[#161b22]/30 hover:bg-[#161b22] transition-colors"
-            >
-              <h3 class="text-sm font-medium text-[#f0f6fc] hover:text-[#58a6ff] line-clamp-1">{note.data.title}</h3>
-              <div class="flex items-center justify-between text-xs text-[#8b949e] mt-1">
-                <span>{note.data.category}</span>
-                <time>{formatDate(note.data.publishDate)}</time>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-  </div>
+  <section>
+    <h2>Latest Notes</h2>
+    {notes.length === 0 ? (
+      <p>No notes published yet.</p>
+    ) : (
+      <ul>
+        {notes.slice(0, 5).map((entry) => (
+          <li>
+            <time datetime={entry.data.publishDate.toISOString()}>{formatDate(entry.data.publishDate)}</time>
+            {' - '}
+            <a href={`/notes/${entry.id}`}>{entry.data.title}</a>
+            {' '}[{entry.data.category}]
+          </li>
+        ))}
+      </ul>
+    )}
+    <p><a href="/notes">All notes &rarr;</a></p>
+  </section>
 </Layout>

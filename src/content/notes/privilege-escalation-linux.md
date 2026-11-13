@@ -1,40 +1,40 @@
 ---
-title: "Comandos clave para escalada de privilegios en Linux"
-description: "Cheat-sheet de enumeración rápida en entornos Linux."
+title: "Linux Privilege Escalation Essentials"
+description: "Quick enumeration cheat sheet for Linux environments."
 publishDate: "2024-05-12"
 category: "Linux"
-tags: ["Privesc", "SUID", "Sudo", "Linux"]
+tags: ["PrivEsc", "SUID", "Sudo", "Linux"]
 ---
 
-# Escalada de Privilegios en Linux: Enumeración Básica
+# Linux Privilege Escalation: Basic Enumeration
 
-## Privilegios Sudo
+## Sudo Privileges
 
-Verificar comandos ejecutables como superusuario sin contraseña:
+Check commands that can be run as superuser without password:
 
 ```bash
 sudo -l
 ```
 
-## Binarios SUID
+## SUID Binaries
 
-Localizar binarios con bit SUID establecido en el sistema de archivos:
+Locate binaries with SUID permission bit set across the filesystem:
 
 ```bash
 find / -perm -4000 -type f -exec ls -la {} 2>/dev/null \;
 ```
 
-## Capacidades (Capabilities)
+## Capabilities
 
-Inspeccionar capacidades asignadas a binarios:
+Inspect filesystem capabilities assigned to binaries:
 
 ```bash
 getcap -r / 2>/dev/null
 ```
 
-## Tareas programadas (Cron)
+## Scheduled Tasks (Cron)
 
-Revisar crontabs del sistema y de usuarios:
+Review system and user cron tables:
 
 ```bash
 cat /etc/crontab
